@@ -1,0 +1,23 @@
+CREATE DATABASE banco_de_dados; 
+-- Para Criar um banco de dados
+USE banco_de_dados;
+-- Para deixar o banco de dados ativo
+
+CREATE TABLE aluno(
+-- Cria uma tabela
+id_aluno INT NOT NULL AUTO_INCREMENT,
+-- Declara o id como um número que não pode ser nulo e que ele vai se preencher sozinho
+nome VARCHAR(45),
+-- Declara o nome como um texto de até 45 caractéres
+idade INT,
+-- Declara a idade como número inteiro
+);
+
+INSERT INTO aluno
+(nome,idade)
+VALUES
+('Nome da pessoa', 16);
+-- Vai popular a tabela
+
+SELECT * FROM aluno;
+-- Faz uma consulta na tabela aluno inteira.
