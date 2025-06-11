@@ -1,0 +1,41 @@
+CREATE USER	'professor'@'localhost' IDENTIFIED BY '123';
+
+SELECT * FROM mysql.user;
+
+-- GRANT => dar permissão
+
+	 Database|Tabela
+GRANT SELECT ON *.* TO 'professor'@'lcoalhost';
+
+-- SHOW GRANTS FOR => Mostrar Permissões do usuário
+
+SHOW GRANTS FOR 'professor'@'localhost';
+
+-- DROP USER => Vai excluir o usuário
+
+DROP USER 'professor'@'localhost';
+
+-- ----------------------------------------------------------------
+
+-- 1° Demanada: Criar usuário estagiário => Só pode fazer consulta no 1° banco de dados da lista de vocês.
+
+CREATE USER 'Júlia Rampazi'@'localhost' IDENTIFIED BY '526';
+
+SELECT * FROM mysql.user;
+
+GRANT SELECT ON aula_03_25.* TO 'Júlia Rampazi'@'localhost';
+
+SHOW GRANTS FOR 'Júlia Rampazi'@'localhost';
+
+
+-- ----------------------------------------------------------------
+
+-- 2° Demanda: Agora permissão INSERT.
+
+GRANT INSERT ON aula_03_25.aluno TO 'Júlia Rampazi'@'localhost';
+
+SHOW GRANTS FOR 'Júlia Rampazi'@'localhost';
+
+-- ----------------------------------------------------------------
+
+Para Remover a pesmissão do usuário o comando é: REVOKE.
