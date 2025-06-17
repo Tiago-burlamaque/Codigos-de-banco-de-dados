@@ -1,0 +1,113 @@
+CREATE DATABASE lojaY;
+
+USE lojaY;
+
+CREATE TABLE representante(
+	id_representante INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(45),
+    cnpj BIGINT UNIQUE
+);
+
+CREATE TABLE produto(
+	id_produto INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(45),
+    codigo VARCHAR(45),
+    estoque INT
+);
+
+CREATE TABLE compra(
+	id_compra INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    data_horario DATETIME,
+    quantidade INT,
+    produto_id VARCHAR(45),
+    representante_id INT
+);
+    
+    ALTER TABLE compra
+    ADD FOREIGN KEY (representante_id)
+    REFERENCES representante(id_representante);
+    
+	ALTER TABLE compra
+    ADD FOREIGN KEY (produto_id)
+    REFERENCES produto(id_produto);
+
+    ALTER TABLE compra
+	RENAME COLUMN produto TO produto_id;
+    
+    ALTER TABLE compra
+	MODIFY COLUMN produto_id INT;
+
+    
+    INSERT INTO representante
+    (nome,cnpj)
+ 	VALUES
+    ('Júlia Rampazi', 586324589427),
+    ('Tiago',154863258746951),
+    ('Miagy',48653258796541);
+    
+    SELECT* FROM representante;
+    
+    INSERT INTO produto
+    (nome,codigo,estoque)
+    VALUES
+    ('Sabonete','1',200),
+    ('Chocolate','12',300),
+    ('Doritos','123',400),
+    ('CPU','1234',350),
+    ('GPU','12345',600);
+    
+    SELECT * FROM produto;
+    
+--  SELECT produto.nome, max(produto.estoque) FROM produto;
+   
+   INSERT INTO compra
+   (data_horario,quantidade,produto_id,representante_id)
+   VALUES
+   ('2025-06-15',25,2,1),
+   ('2025-04-12',2,5,2);
+   
+	INSERT INTO compra
+   (data_horario,quantidade,produto_id,representante_id)
+   VALUES
+   ('2025-06-15',55,1,1),
+   ('2025-04-12',2,5,2);
+   
+	SELECT * FROM compra;
+   
+    SELECT max(estoque) FROM produto;
+    
+    SELECT min(estoque) FROM produto;
+
+    
+    
+	DELIMITER $$
+	CREATE TRIGGER reducao_estoque
+	AFTER INSERT ON compra
+    FOR EACH ROW
+    BEGIN 
+    UPDATE produto
+    SET produto.estoque = produto.estoque - new.quantidade
+    WHERE produto.id_produto = new.produto_id;
+    END
+    $$
+    
+	SELECT estoque FROM produto;
+  
+	CREATE VIEW vw_consulta_total_quantidade AS
+	SELECT produto.nome, AVG(compra.quantidade) FROM compra
+	JOIN produto
+	ON produto.id_produto = compra.produto_id
+	GROUP BY produto.nome;
+    
+    SELECT * FROM vw_consulta_total_quantidade;
+    
+    SELECT representante.nome FROM representante
+    JOIN compra
+    ON representante.id_representante = compra.representante_id
+    GROUP BY representante_id;
+    
+	SELECT DISTINCT representante.nome FROM representante
+    JOIN compra
+    ON representante.id_representante = compra.representante_id;
+	
+    
